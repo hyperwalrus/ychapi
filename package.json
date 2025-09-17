@@ -1,0 +1,25 @@
+{
+  "name": "ychapi",
+  "version": "0.912.0",
+  "description": "Walrus-compatible exchange js api layer",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperwalrus/ychapi.git"
+  },
+  "keywords": [
+    "walrustrader"
+  ],
+  "author": "hyperwalrus",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/hyperwalrus/ychapi/issues"
+  },
+  "homepage": "https://github.com/hyperwalrus/ychapi#readme",
+  "files": [
+    "dist/"
+  ]
+}
