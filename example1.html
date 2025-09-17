@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ychapi example 1</title>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/reconnecting-websocket@4.4.0/dist/reconnecting-websocket-iife.min.js"></script>
+  <script src="/dist/ychapi.min.js"></script>
+  <script src="/dist/api.js"></script>
+
+</head>
+
+<body>
+
+ychapi example 1
+<br/>
+API base: https://testnet-api.nighttrader.exchange
+
+<br/>
+<br/>
+<button onclick="start()">start ychapi initialization and sync</button>
+
+<br/>
+<span id="status"></span>
+
+<div id="login_form" style="display: none;">
+	<br/>
+	<br/>
+	<input type="text" id="login" placeholder="login"/><br/>
+	<input type="password" id="password" placeholder="password"/><br/>
+	<input type="text" id="otp_code" placeholder="otp_code"/><br/>
+	<button onclick="login()">login</button>
+
+	<br/>
+	<span id="login_status"></span>
+
+	<div id="user_info" style="display: none;">
+		<br/>
+		<br/>
+		Account ID: <span id="user_id"></span>
+
+		<br/>
+		<br/>
+		Balances:
+		<br/>
+		<span id="user_balances"></span>
+
+	</div>
+
+</div>
+
+<script>
+	function start() {
+		ychapi.start("https://testnet-api.nighttrader.exchange", {
+			on_sync_connecting: function() {
+				console.log("syncing...");
+				document.getElementById("status").textContent = "syncing...";
+			},
+			on_sync_connection_lost: function() {
+				console.log("sync connection lost");
+				document.getElementById("status").textContent = "sync connection lost";
+			},
+			on_sync_connection_error: function(err) {
+				console.log("sync connection error", err);
+				document.getElementById("status").textContent = "sync connection error";
+			},
+			on_sync_data_init: function() {
+				console.log("sync data init");
+				document.getElementById("status").textContent = "sync data init";
+			},
+			on_sync_ready: function() {
+				console.log("sync ready");
+				document.getElementById("status").textContent = "sync ready";
+				document.getElementById("login_form").style.display = "block";
+				document.getElementById("user_info").style.display = "none";
+			},
+			on_sync_message: function(message) {
+				console.log("sync message", message);
+				document.getElementById("status").textContent = "sync message";
+			},
+			on_sync_data_update: function(data) {
+				console.log("sync data update", data);
+				document.getElementById("status").textContent = "sync data update";
+			}
+		});
+	}
+
+	function login() {
+		const login = document.getElementById("login").value;
+		const password = document.getElementById("password").value;
+		const otp_code = document.getElementById("otp_code").value;
+		ychapi.call_login(login, password, otp_code).then(() => {
+			document.getElementById("login_status").textContent = "login success";			
+			document.getElementById("user_id").textContent = "U-"+ychapi.get_user_account_id();
+			document.getElementById("user_info").style.display = "block";
+			let text = "";
+			const coin_names = ychapi.get_coin_names();
+			for (const coin_name of coin_names) {
+				const coin_balance = ychapi.get_coin_balance(coin_name);
+				text += coin_name + ": " + coin_balance.sum + "<br/>";
+			}
+
+			document.getElementById("user_balances").innerHTML = text;
+
+		}).catch((err) => {
+			document.getElementById("login_status").textContent = "login error: " + err;
+		});
+	}
+</script>
+
+</body>
+</html>

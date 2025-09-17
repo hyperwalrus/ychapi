@@ -1,6 +1,6 @@
 {
   "name": "ychapi",
-  "version": "0.912.0",
+  "version": "0.917.0",
   "description": "Walrus-compatible exchange js api layer",
   "main": "api.js",
   "scripts": {
@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/hyperwalrus/ychapi#readme",
   "files": [
-    "dist/"
+    "dist/",
+    "README.md",
+    "LICENSE.txt",
+    "example1.html"
   ]
 }
