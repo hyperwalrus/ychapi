@@ -41,7 +41,7 @@
  * @returns null
  */
 ychapi.start = function(base_uri, callbacks) {
-  return ychapi._start(base_uri, callbacks);
+	return ychapi._start(base_uri, callbacks);
 };
 
 /*!
@@ -89,13 +89,28 @@ ychapi.call_logout = async function() {
  * @returns {string[]}
  */
 ychapi.get_coin_names = function() {
-  return ychapi._get_coin_names();
+	return ychapi._get_coin_names();
 };
 
 /*!
  * Get the coininfo by coin name
  * @param {string} coin
  * @returns {object}
+ * {
+ *   coin: {string} - coin name
+ *   type: {string} - coin type (txout_t1, peg_t1, evm_t1, erc20_t1)
+ *   cfg: {object} - coin config 
+ *    txout_t1: (pub, prv, msig, pref, comp, txver, txtime, shf, maxrbf)
+ *    peg_t1: (pub, prv, msig, pref, comp, txver, txtime, shf, maxrbf)
+ *    evm_t1: (unit, coin, vault, net, netid, tw)
+ *    erc20_t1: (unit, coin, vault, net, netid, tw)
+ *   ext: {object} - coin extra info (txhashurl, txaddrurl, priceext, priceexttime)
+ *   block: {number} - block number
+ *   btime: {number} - block time
+ *   peg: {object} - peg info
+ *   ops: {object} - ops info (info, recv, move, send) - allowed ops: can get info, deposit, withdraw, move
+ *   fee: {object} - fee info (minamount, buyfee, sellfee, withfee, txbytefee, txbyteround, mempoolminfee)
+ * }
  */
 ychapi.get_coin_info = function(coin) {
   return ychapi._get_coin_info(coin);
@@ -171,7 +186,6 @@ ychapi.get_market_info = function(market_name) {
  *   deposits: {BigInt} - deposits in processing sum
  *   withdraws: {BigInt} - withdrawals in processing sum
  *   clearance: {BigInt} - processing now sum (a change on the blockchain)
- *   cycle: {number} - cycle number for peg-based coins (peg_t1)
  * }
  */
 ychapi.get_coin_balance = function(coin) {
@@ -525,7 +539,7 @@ ychapi.get_market_trades = function(market_name) {
  * @param {BigInt} amountb - the amount of the coin to spend
  * @param {BigInt} feeb - the fee (coinb) to buy
  * @returns {Promise} 
- * - resolved (no data), 
+ * - resolved (data: {index: {number} - the order index}), 
  * - rejected with the error from the preparing/server
  */
 ychapi.call_buy = async function(market_name, coina, coinb, price, amounta, amountb, feeb) {
@@ -542,7 +556,7 @@ ychapi.call_buy = async function(market_name, coina, coinb, price, amounta, amou
  * @param {BigInt} amountb - the amount of the coin to acquire
  * @param {BigInt} feea - the fee (coina) to sell
  * @returns {Promise} 
- * - resolved (no data), 
+ * - resolved (data: {index: {number} - the order index}), 
  * - rejected with the error from the preparing/server
  */
 ychapi.call_sell = async function(market_name, coina, coinb, price, amounta, amountb, feea) {
@@ -558,7 +572,7 @@ ychapi.call_sell = async function(market_name, coina, coinb, price, amounta, amo
  * - resolved (no data),
  * - rejected with the error from the server
  */
-ychapi.call_buy_order_cancel = function(coina, coinb, index) {
+ychapi.call_buy_order_cancel = async function(coina, coinb, index) {
   return ychapi._call_buy_order_cancel(coina, coinb, index);
 };
 
@@ -571,7 +585,7 @@ ychapi.call_buy_order_cancel = function(coina, coinb, index) {
  * - resolved (no data),
  * - rejected with the error from the server
  */
-ychapi.call_sell_order_cancel = function(coina, coinb, index) {
+ychapi.call_sell_order_cancel = async function(coina, coinb, index) {
   return ychapi._call_sell_order_cancel(coina, coinb, index);
 };
 
@@ -583,7 +597,7 @@ ychapi.call_sell_order_cancel = function(coina, coinb, index) {
  * - resolved with the chart data,
  * - rejected with the error from the server
  */
-ychapi.call_get_chart_data = function(market_name, period) {
+ychapi.call_get_chart_data = async function(market_name, period) {
   return ychapi._call_get_chart_data(market_name, period);
 };
 
