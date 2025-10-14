@@ -108,7 +108,7 @@ ychapi.get_coin_names = function() {
  *   block: {number} - block number
  *   btime: {number} - block time
  *   peg: {object} - peg info
- *   ops: {object} - ops info (info, recv, move, send) - allowed ops: can get info, deposit, withdraw, move
+ *   ops: {object} - ops info (info, recv, move, send) - allowed ops: can get info, deposit, withdraw, transfer
  *   fee: {object} - fee info (minamount, buyfee, sellfee, withfee, txbytefee, txbyteround, mempoolminfee)
  * }
  */
@@ -223,6 +223,46 @@ ychapi.get_coin_withdrawals = function(coin) {
  * Get txouts by coin name
  * @param {string} coin
  * @returns {object[]}
+ * array of {
+ * coin: {string} - the coin name
+ * gidx: {number} - the gidx
+ * hold: {number} - the holding type (1-user)
+ * state: {number} - the state ref:
+ *    TStateFuture        = 350
+ *    TStateUsable        = 400
+ *    TStateLocked        = 500
+ *    TStatePast          = 800
+ *    TStateSpent         = 900
+ *    TStateLost          = 1000
+ * txid: {string} - the txid
+ * ninp: {number} - the ninp
+ * nout: {number} - the nout
+ * nseq: {number} - the nseq
+ * addr : {
+ *  vers: {number} - the vers (1)
+ *  addr: {string} - the address
+ *  host: {string} - the host (for evm coins, address of the vault)
+ *  lck1: {number} - the locktime 1 unix time
+ *  lck2: {number} - the locktime 2 unix time
+ *  pksc: {string} - the pubkey script
+ *  pub1: {string} - the pub1
+ *  pub2: {string} - the pub2
+ *  rdsc: {string} - the redeem script
+ * }
+ * free: {BigInt} - the available amount
+ * amount: {BigInt} - the amount (ref amount = free + filled + orders)
+ * filled: {BigInt} - the filled amount (credit)
+ * orders: {BigInt} - the orders
+ * time: {
+ *   made: {number} - the made unix time
+ *   split: {number} - the split
+ *   future: {number} - 
+ *   usable: {number} - the usable
+ *   expire: {number} - the expire unix time
+ *   locked: {number} - the locked unix time
+ *   backup: {number} - the backup unix time
+ * }
+ * }
  */
 ychapi.get_coin_txouts = function(coin) {
   return ychapi._get_coin_txouts(coin);
@@ -751,8 +791,16 @@ ychapi.get_page_size = function() {
 };
 
 /*!
+ * Get the evm erc20 abi
+ * @returns {Object}
+ */
+ychapi.get_evm_erc20_abi = function() {
+  return ychapi._get_evm_erc20_abi();
+};
+
+/*!
  * Get the evm vault7u abi
- * @returns {string}
+ * @returns {Object}
  */
 ychapi.get_evm_vault7u_abi = function() {
   return ychapi._get_evm_vault7u_abi();
