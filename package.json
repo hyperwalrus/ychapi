@@ -1,6 +1,6 @@
 {
   "name": "ychapi",
-  "version": "0.945.0",
+  "version": "0.946.0",
   "description": "Walrus-compatible exchange js api layer",
   "main": "api.js",
   "scripts": {
