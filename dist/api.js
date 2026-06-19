@@ -439,49 +439,6 @@ ychapi.get_coin_server_locktime = function(coin) {
 };
 
 /*!
- * TODO: may obsolete
- *
- * @deprecated
- * ALERT: API below is expected to be obsolete and planned to be removed in next versions
- * 
- */
-ychapi.get_coin_allowed_deposit_senders = function(coin) {
-  return ychapi._get_coin_allowed_deposit_senders(coin);
-};
-
-/*!
- * Register the deposit evm address
- * @param {string} coin
- * @param {string} address
- * @returns {Promise}
- * - resolved (no data),
- * - rejected with the error from the server
- * 
- * @deprecated
- * ALERT: API below is expected to be obsolete and planned to be removed in next versions
- *
- */
-ychapi.call_register_deposit_evm_address = function(coin, address) {
-  return ychapi._call_register_deposit_evm_address(coin, address);
-};
-
-/*!
- * Unregister the deposit evm address
- * @param {string} coin
- * @param {string} address
- * @returns {Promise}
- * - resolved (no data),
- * - rejected with the error from the server
- * 
- * @deprecated
- * ALERT: API below is expected to be obsolete and planned to be removed in next versions
- *
- */
-ychapi.call_unregister_deposit_evm_address = function(coin, address) {
-  return ychapi._call_unregister_deposit_evm_address(coin, address);
-};
-
-/*!
  * TRADING API
  */
 
